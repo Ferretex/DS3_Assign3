@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>user click Test</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <!-- our buttond to tell others -->
+        <button id="start_light" style="background-color:rgb(124, 124, 124); color:rgb(255, 255, 255)">start light</button>
+        <button id="magenta_light" style="background-color:rgb(255, 0, 255); color:rgb(255, 255, 255)">magenta light</button>
+        <button id="cyan_light" style="background-color:rgb(0, 255, 255); color:rgb(255, 255, 255)">cyan light</button>
+        <button id="blue_light" style="background-color:rgb(0, 0, 255); color:rgb(255, 255, 255)">blue light</button>
+        <button id="green_light" style="background-color:rgb(0, 255, 0); color:rgb(255, 255, 255)">green light</button>
+        <button id="red_light" style="background-color:rgb(255, 0, 0); color:rgb(255, 255, 255)">red light</button>
+        <button id="end_light" style="background-color:rgb(126, 126, 126); color:rgb(255, 255, 255)">end light</button>
+
+        <!-- this is magic code created when the node server runs -->
+        <!-- //VERY HANDY! https://socket.io/docs/v3/emit-cheatsheet/  -->
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            let socket = io();
+
+            socket.on('connect', (userData) => {
+                console.log('I exist!');
+
+                //put code here so that we know that socket.io has initailized ...
+                document.querySelector('#start_light').addEventListener('mousedown', function(){
+                    socket.emit('lightchange', 'start_light');
+                });
+
+                document.querySelector('#start_light').addEventListener('mouseup', function(){
+                    socket.emit('lightchange', 'start_light');
+                });
+
+                document.querySelector('#magenta_light').addEventListener('mousedown', function(){
+                    socket.emit('lightchange', 'magenta_light');
+                });
+
+                document.querySelector('#magenta_light').addEventListener('mouseup', function(){
+                    socket.emit('lightchange', 'magenta_light');
+                });
+
+                document.querySelector('#cyan_light').addEventListener('mousedown', function(){
+                    socket.emit('lightchange', 'cyan_light');
+                });
+
+                document.querySelector('#cyan_light').addEventListener('mouseup', function(){
+                    socket.emit('lightchange', 'cyan_light');
+                });
+
+                document.querySelector('#blue_light').addEventListener('mousedown', function(){
+                    socket.emit('lightchange', 'blue_light');
+                });
+
+                document.querySelector('#blue_light').addEventListener('mouseup', function(){
+                    socket.emit('lightchange', 'blue_light');
+                });
+
+                document.querySelector('#green_light').addEventListener('mousedown', function(){
+                    socket.emit('lightchange', 'green_light');
+                });
+
+                document.querySelector('#green_light').addEventListener('mouseup', function(){
+                    socket.emit('lightchange', 'green_light');
+                });
+
+                document.querySelector('#red_light').addEventListener('mousedown', function(){
+                    socket.emit('lightchange', 'red_light');
+                });
+
+                document.querySelector('#red_light').addEventListener('mouseup', function(){
+                    socket.emit('lightchange', 'red_light');
+                });
+
+                document.querySelector('#end_light').addEventListener('mousedown', function(){
+                    socket.emit('lightchange', 'end_light');
+                });
+
+                document.querySelector('#end_light').addEventListener('mouseup', function(){
+                    socket.emit('lightchange', 'end_light');
+                });
+
+                //listen to event from server
+                socket.on('color_change', (data) => {
+                    let colorStr = 'rgb(' + data.r + ',' + data.g + ',' + data.b + ')';
+                    console.log('color_change:' + colorStr);
+                    document.body.style.backgroundColor = colorStr;
+                });
+            });
+
+        </script>
+    </body>
+</html>
