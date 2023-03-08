@@ -22,8 +22,8 @@
 
                 });
 
-                 //listen to event from server
-                 socket.on('delete_walls', (data) => {
+                //listen to event from server
+                socket.on('delete_walls', (data) => {
                     let walls = document.querySelectorAll('#' + data)
                     console.log(walls);
                     
@@ -71,7 +71,24 @@
                     }
                 });
 
+                function startTransmit() {  //start transmitting the player location, make one drop every tick
+                        setInterval(function() {
+                            getPlayerLocation();
+                        }, 500);
+
+                        function getPlayerLocation() {
+                            // Get random spawn location above camera
+                            let playerX = document.querySelector('#player').getAttribute('position').x;
+                            let playerZ = document.querySelector('#player').getAttribute('position').z;
+                            //console.log('Player Location: ' + playerX + ', ' + playerZ);
+
+                            socket.emit('playerOneMoves', playerX, playerZ);
+                        }
+                    }
+                    startTransmit();
+
                 }
+  
             })
         </script>
 

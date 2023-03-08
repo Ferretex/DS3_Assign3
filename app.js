@@ -40,6 +40,11 @@ io.on('connection', (socket) => {
         console.log(data + " ON");
         io.emit('lightup', data);
     });
+
+    socket.on('playerOneMoves', (locX, locZ) => {
+        console.log("Player Moved:" + locX + ', ' + locZ);
+        io.emit('displayLocation', locX, locZ);
+    });
 });
 
 server.listen(LISTEN_PORT);                         //starts server
