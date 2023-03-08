@@ -29,15 +29,7 @@
                     socket.emit('lightchange', 'start_light');
                 });
 
-                document.querySelector('#start_light').addEventListener('mouseup', function(){
-                    socket.emit('lightchange', 'start_light');
-                });
-
                 document.querySelector('#magenta_light').addEventListener('mousedown', function(){
-                    socket.emit('lightchange', 'magenta_light');
-                });
-
-                document.querySelector('#magenta_light').addEventListener('mouseup', function(){
                     socket.emit('lightchange', 'magenta_light');
                 });
 
@@ -45,15 +37,7 @@
                     socket.emit('lightchange', 'cyan_light');
                 });
 
-                document.querySelector('#cyan_light').addEventListener('mouseup', function(){
-                    socket.emit('lightchange', 'cyan_light');
-                });
-
                 document.querySelector('#blue_light').addEventListener('mousedown', function(){
-                    socket.emit('lightchange', 'blue_light');
-                });
-
-                document.querySelector('#blue_light').addEventListener('mouseup', function(){
                     socket.emit('lightchange', 'blue_light');
                 });
 
@@ -61,23 +45,11 @@
                     socket.emit('lightchange', 'green_light');
                 });
 
-                document.querySelector('#green_light').addEventListener('mouseup', function(){
-                    socket.emit('lightchange', 'green_light');
-                });
-
                 document.querySelector('#red_light').addEventListener('mousedown', function(){
                     socket.emit('lightchange', 'red_light');
                 });
 
-                document.querySelector('#red_light').addEventListener('mouseup', function(){
-                    socket.emit('lightchange', 'red_light');
-                });
-
                 document.querySelector('#end_light').addEventListener('mousedown', function(){
-                    socket.emit('lightchange', 'end_light');
-                });
-
-                document.querySelector('#end_light').addEventListener('mouseup', function(){
                     socket.emit('lightchange', 'end_light');
                 });
 
