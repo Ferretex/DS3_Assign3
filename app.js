@@ -21,14 +21,12 @@ io.on('connection', (socket) => {
         console.log(socket.id + " is disconected. :(")
     })
 
-    socket.on('red', (data) => {
-        console.log("red event trigger");
-        io.emit('color_change', {r:255, g:0, b:0});
+    socket.on('resetPlayerOne', () => {
+        io.emit('resetP1');
     });
 
-    socket.on('blue', (data) => {
-        console.log("blue event trigger");
-        io.emit('color_change', {r:0, g:0, b:255});
+    socket.on('resetPlayerTwo', () => {
+        io.emit('resetP2');
     });
 
     socket.on('game_end', (data) => {
@@ -42,8 +40,13 @@ io.on('connection', (socket) => {
     });
 
     socket.on('playerOneMoves', (locX, locZ) => {
-        console.log("Player Moved:" + locX + ', ' + locZ);
+        //console.log("Player Moved:" + locX + ', ' + locZ);
         io.emit('displayLocation', locX, locZ);
+    });
+
+    socket.on('player_hit', (data) => {
+        console.log("Player Hit:" + data);
+        io.emit('p1_hit', data);
     });
 });
 
