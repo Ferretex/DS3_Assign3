@@ -4,8 +4,7 @@
         <title>user click Test</title>
         <meta charset="utf-8" />
         <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@tagOrCommit/dist/aframe-extras.min.js"></script>
-
+        <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@fb96ab2/dist/aframe-extras.min.js"></script>
         <!-- //VERY HANDY! https://socket.io/docs/v3/emit-cheatsheet/  -->
         <script src="/socket.io/socket.io.js"></script>
         <script>
@@ -15,7 +14,6 @@
 
                 socket.on('connect', (userData) => {
                     console.log('I exist!');
-
                     socket.emit('resetPlayerTwo');
 
                     //Run when end button hit, move on to gamemode 2
@@ -23,7 +21,6 @@
                         socket.emit('game_end', "wall");
                     });
                 });
-
 
                 //If player 2 resets, also reset
                 socket.on('resetP1', () => {
@@ -44,6 +41,7 @@
                     });
                 });
 
+                //adds animation for hit events
                 player.setAttribute('animation__1', {'property': 'camera.zoom',
                 from: 1,
                 to: 1.1,
@@ -56,25 +54,21 @@
                 dur: 50, 
                 'startEvents': 'hitAnim'});
 
-                //Delete walls and change to competitive mode, also adds score text
+                //Delete walls and change to competitive mode, change nav mesh, also adds score text
                 socket.on('delete_walls', (data) => {
-
                     let self = this;
-
-                    let walls = document.querySelectorAll('#' + data);
-                    console.log(walls);
+                    let walls = document.querySelectorAll('#' + data);  //get inner walls in scene
                     
-                    walls.forEach(function (node) {
-                        console.log(node);
+                    walls.forEach(function (node) {         //Destroy inner walls
                         node.parentNode.removeChild(node);
                         node.destroy();
                     }, "myThisArg");
 
-                    let button = document.querySelector('#end_button');
+                    let button = document.querySelector('#end_button');     //destroy end button
                     button.parentNode.removeChild(button);
                     button.destroy();
                     
-                    function addPillar(xPos, zPos){
+                    function addPillar(xPos, zPos){         //function to add pillars at a given location
                         var pillar = document.createElement('a-entity');
                         pillar.setAttribute('id', 'pillar');
                         pillar.setAttribute('geometry', {
@@ -83,64 +77,55 @@
                             height:10, 
                             depth: 1
                         });
-
                         pillar.setAttribute('material', {
                             color: 'white',
                             roughness: 1
                         });
                         pillar.setAttribute('position', {x:xPos, y:5, z:zPos});
-
                         pillar.setAttribute('shadow', {
                             receive: "true",
                             cast: "true"
                         });
-
                         self.el.sceneEl.appendChild(pillar);
                     }
 
-                    for(i = -15; i <= 15; i+= 5){
+                    for(i = -15; i <= 15; i+= 5){       //adds pillars in a grid pattern
                         for(j = -15; j <= 15; j+= 5){
                             addPillar(i, j - 20);
                         }
                     }
 
-                    function addScoreText() {
+                    function addScoreText() {   //add score text parented to the camera
                         var scoreText = document.createElement('a-entity');
                         scoreText.setAttribute('id', 'scoreText');
-
                         scoreText.setAttribute('material', {
                             color: 'white',
                             roughness: 1
                         });
                         scoreText.setAttribute('position', {x:0, y:0.035, z:-0.05});
-
                         scoreText.setAttribute('text', {
                             value:'Hits: 0',
                             color: 'red',
                             align: 'center',
                             width: '0.1'
                         })
-
                         scoreText.setAttribute('shadow', {
                             receive: "true",
                             cast: "true"
                         });
-
                         player.appendChild(scoreText);
                     }
                     addScoreText();
-
+                    document.querySelector('#walkMesh').setAttribute('gltf-model', 'assets/FloorTwo_NavMesh.gltf');
                 });
-
 
                 // Listens for player 2 to change the lights, and then swaps the active light
                 socket.on('lightup', (data) => {
                     let changeLight = document.querySelector('#' + data);
-                    console.log(changeLight);
+                    console.log(data + " activated");
 
-                    changeLight.setAttribute('light', {intensity: 1});
-
-
+                    changeLight.setAttribute('light', {intensity: 1});      //activate given light
+                    //deactivate previous light
                     if(changeLight.getAttribute('id') != 'start_light'){
                         document.querySelector('#start_light').setAttribute('light', {intensity: 0});
                     }
@@ -177,8 +162,8 @@
 
                         function getPlayerLocation() {
                             // Get player X and Z pos
-                            let playerX = player.getAttribute('position').x;
-                            let playerZ = player.getAttribute('position').z;
+                            let playerX = player.parentNode.getAttribute('position').x;
+                            let playerZ = player.parentNode.getAttribute('position').z;
                             //console.log('Player Location: ' + playerX + ', ' + playerZ);
 
                             socket.emit('playerOneMoves', playerX, playerZ);
@@ -190,15 +175,14 @@
   
             });
         </script>
-
     </head>
 
     <body>
-        <a-scene experience-manager background="color:rgb(255, 255, 255);">
+        <a-scene experience-manager background="color:rgb(0, 255, 255);">
             
             <a-assets>
                 <a-asset-item id="floorModelOne" src="assets/FloorOne_NavMesh.gltf"></a-asset-item>
-                <a-asset-item id="floorModelTwo" src="assets/FloorOne_NavMesh.gltf"></a-asset-item>
+                <a-asset-item id="floorModelTwo" src="assets/FloorTwo_NavMesh.gltf"></a-asset-item>
             </a-assets>
 
             <!-- Enivroment -->
@@ -216,7 +200,6 @@
                 <a-entity id="wallExt" geometry="primitive:plane; width:30; height:10;" material="color:white; roughness: 1;" position="0 5 -35" rotation="0 0 0" shadow></a-entity>
                 <a-entity id="wallExt" geometry="primitive:plane; width:30; height:10;" material="color:white; roughness: 1;" position="-15 5 -20" rotation="0 90 0" shadow></a-entity>
                 <a-entity id="wallExt" geometry="primitive:plane; width:30; height:10;" material="color:white; roughness: 1;" position="15 5 -20" rotation="0 -90 0" shadow></a-entity>
-
                 <a-entity id="wallExt" geometry="primitive:plane; width:10; height:10;" material="color:white; roughness: 1;" position="0 5 5" rotation="0 180 0" shadow></a-entity>
                 <a-entity id="wallExt" geometry="primitive:plane; width:10; height:10;" material="color:white; roughness: 1;" position="10 5 -5" rotation="0 180 0" shadow></a-entity>
                 <a-entity id="wallExt" geometry="primitive:plane; width:10; height:10;" material="color:white; roughness: 1;" position="-10 5 -5" rotation="0 180 0" shadow></a-entity>
@@ -254,8 +237,6 @@
 
                 <a-entity id="yellow_light" light="type: point; color: #FF0; intensity: 0; castShadow:true; shadowBias:0.0001" position="-12.5 5 -17.5"></a-entity>
 
-                <!-- <a-entity id="orange_light" light="type: point; color: #F80; intensity: 1; castShadow:true; shadowBias:0.0001" position="-7.5 5 -7.5"></a-entity> -->
-
                 <a-entity id="blue_light" light="type: point; color: #00F; intensity: 0; castShadow:true; shadowBias:0.0001" position="-2.5 5 -12.5"></a-entity>
 
                 <a-entity id="red_light" light="type: point; color: #F00; intensity: 0; castShadow:true; shadowBias:0.0001" position="-12.5 5 -27.5"></a-entity>
@@ -272,21 +253,25 @@
                                 animation__click="property:position.y; from:0.55; to:0.6; startEvents:click; dur:300" shadow></a-entity>
                     <a-entity position="0 0 0" geometry="primitive:box; width:0.5; depth:0.5; height:1.25;" material="color:rgb(255, 255, 255)" shadow></a-entity>
                 </a-entity>
-
             </a-entity>
+
+            <!-- NavMesh -->
+            <a-entity id="walkMesh" class="navmesh" gltf-model="#floorModelOne" position="0 0 0" nav-mesh> </a-entity>
 
             <!-- Player -->
-            <a-entity id="player" class="player" camera wasd-controls look-controls position="0 1.6 0" 
-                animation__1="property:camera.zoom; from: 1; to: 1.1; dur: 50; startEvents: hitAnim"
-                animation__2="property:camera.zoom; from: 1.1; to: 1; dur: 50; startEvents: animationcomplete__1">
-                <a-entity cursor="rayOrigin:mouse;" raycaster="far:20; interval:200; objects:.interactive"></a-entity>
-                <a-entity id="hitEffect" geometry="primitive:plane; width:1; height:1;" material="color:red; roughness: 1; shader: flat; opacity: 0;" position="0 0 -0.1"
-                    animation__1="property:material.opacity; from: 0; to: 0.5; dur: 50; startEvents: hitAnim"
-                    animation__2="property:material.opacity; from: 0.5; to: 0; dur: 50; startEvents: animationcomplete__1"> </a-entity>
+            <a-entity id="rig" movement-controls="controls: keyboard, touch; speed: 0.5; constrainToNavMesh: true;" position="0 0 0">
+                <a-entity id="player" position="0 1.6 0" camera="userHeight: 1.6" look-controls
+                    animation__1="property:camera.zoom; from: 1; to: 1.1; dur: 50; startEvents: hitAnim"
+                    animation__2="property:camera.zoom; from: 1.1; to: 1; dur: 50; startEvents: animationcomplete__1">
+                    <a-entity cursor="rayOrigin:mouse;" raycaster="far:20; interval:200; objects:.interactive"></a-entity>
+                    <a-entity id="hitEffect" geometry="primitive:plane; width:1; height:1;" material="color:red; roughness: 1; shader: flat; opacity: 0;" position="0 0 -0.1"
+                        animation__1="property:material.opacity; from: 0; to: 0.5; dur: 50; startEvents: hitAnim"
+                        animation__2="property:material.opacity; from: 0.5; to: 0; dur: 50; startEvents: animationcomplete__1"> </a-entity>
+                </a-entity>
             </a-entity>
+
             <!-- <a-entity camera="fov: 25;" position="0 80 -20" rotation="-90 -90 0"></a-entity> -->
 
-            <a-entity id="walkMesh" class="navmesh" gltf-model="#floorModelOne" position="0 0 0" nav-mesh> </a-entity>
         </a-scene>
     </body>
 </html>

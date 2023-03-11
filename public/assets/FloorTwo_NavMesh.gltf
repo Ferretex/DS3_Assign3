@@ -19,7 +19,7 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "Floor_One"
+            "name" : "Floor_Two"
         }
     ],
     "materials" : [
@@ -38,7 +38,7 @@
                     "ior" : 1
                 }
             },
-            "name" : "initialShadingGroup",
+            "name" : "initialShadingGroup.001",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
                     0.5,
@@ -52,7 +52,7 @@
     ],
     "meshes" : [
         {
-            "name" : "Floor_One",
+            "name" : "Floor_Two",
             "primitives" : [
                 {
                     "attributes" : {
@@ -70,68 +70,68 @@
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 316,
+            "count" : 473,
             "max" : [
-                14.45000171661377,
-                2.3542038434243295e-06,
-                4.449999809265137
+                14.95000171661377,
+                2.4356641006306745e-06,
+                4.949999809265137
             ],
             "min" : [
-                -14.449999809265137,
-                -2.3542038434243295e-06,
-                -34.45000076293945
+                -14.949999809265137,
+                -2.4356641006306745e-06,
+                -34.95000076293945
             ],
             "type" : "VEC3"
         },
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 316,
+            "count" : 473,
             "type" : "VEC2"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 316,
+            "count" : 473,
             "type" : "VEC3"
         },
         {
             "bufferView" : 3,
             "componentType" : 5123,
-            "count" : 1194,
+            "count" : 1872,
             "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 3792,
+            "byteLength" : 5676,
             "byteOffset" : 0,
             "target" : 34962
         },
         {
             "buffer" : 0,
-            "byteLength" : 2528,
-            "byteOffset" : 3792,
+            "byteLength" : 3784,
+            "byteOffset" : 5676,
             "target" : 34962
         },
         {
             "buffer" : 0,
-            "byteLength" : 3792,
-            "byteOffset" : 6320,
+            "byteLength" : 5676,
+            "byteOffset" : 9460,
             "target" : 34962
         },
         {
             "buffer" : 0,
-            "byteLength" : 2388,
-            "byteOffset" : 10112,
+            "byteLength" : 3744,
+            "byteOffset" : 15136,
             "target" : 34963
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 12500,
-            "uri" : "FloorOne_NavMesh.bin"
+            "byteLength" : 18880,
+            "uri" : "FloorTwo_NavMesh.bin"
         }
     ]
 }
